@@ -1,0 +1,25 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Elixir / Mix
+human_sim/_build/
+human_sim/deps/
+human_sim/cover/
+human_sim/doc/
+human_sim/tmp/
+human_sim/erl_crash.dump
+human_sim/*.ez
+human_sim/human_sim-*.tar
+
+# OS and editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Local / debug (keep structure)
+DOCS/debugs/*.md
+!DOCS/debugs/.gitkeep
