@@ -9,7 +9,16 @@ defmodule HumanSim.MixProject do
       start_permanent: Mix.env() == :prod,
       description: "Rule-based human simulator: chatting NPCs, crowds, items, personalities (Elixir/OTP).",
       package: package(),
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
+    ]
+  end
+
+  defp aliases do
+    [
+      setup: ["deps.get", "compile", "assets.build"],
+      "assets.build": ["esbuild default"],
+      "assets.watch": ["esbuild default --watch"]
     ]
   end
 
@@ -31,8 +40,12 @@ defmodule HumanSim.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:phoenix, "~> 1.7"},
+      {:phoenix_html, "~> 4.1"},
+      {:phoenix_live_view, "~> 0.20"},
+      {:bandit, "~> 1.5"},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:jason, "~> 1.4"}
     ]
   end
 end

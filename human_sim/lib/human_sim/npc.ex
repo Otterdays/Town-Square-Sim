@@ -69,6 +69,14 @@ defmodule HumanSim.NPC do
     topic = infer_topic(message)
     response = Dialogue.respond(topic, state.personality, state.mood)
     memory = add_memory(state.memory, {:said, message, response})
+    HumanSim.Events.broadcast(%{
+      type: :chat,
+      npc_id: state.id,
+      npc_name: state.name,
+      area_id: state.area_id,
+      message: message,
+      response: response
+    })
     {:reply, response, %{state | memory: memory}}
   end
 
@@ -76,6 +84,14 @@ defmodule HumanSim.NPC do
   def handle_call({:chat, topic}, _from, state) do
     response = Dialogue.respond(topic, state.personality, state.mood)
     memory = add_memory(state.memory, {:chatted, topic, response})
+    HumanSim.Events.broadcast(%{
+      type: :chat,
+      npc_id: state.id,
+      npc_name: state.name,
+      area_id: state.area_id,
+      topic: topic,
+      response: response
+    })
     {:reply, response, %{state | memory: memory}}
   end
 
@@ -92,6 +108,14 @@ defmodule HumanSim.NPC do
 
   @impl true
   def handle_call({:move, area_id}, _from, state) do
+    from_area = state.area_id
+    HumanSim.Events.broadcast(%{
+      type: :move,
+      npc_id: state.id,
+      npc_name: state.name,
+      from_area: from_area,
+      to_area: area_id
+    })
     {:reply, :ok, %{state | area_id: area_id}}
   end
 
@@ -103,6 +127,14 @@ defmodule HumanSim.NPC do
   @impl true
   def handle_cast({:hear, from_id, message}, state) do
     memory = add_memory(state.memory, {:heard, from_id, message})
+    HumanSim.Events.broadcast(%{
+      type: :hear,
+      npc_id: state.id,
+      npc_name: state.name,
+      area_id: state.area_id,
+      from_id: from_id,
+      message: message
+    })
     {:noreply, %{state | memory: memory}}
   end
 

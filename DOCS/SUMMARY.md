@@ -6,7 +6,8 @@
 ## Status
 
 - **Core:** Complete. World, Item, Personality, Dialogue, NPC, Crowd; supervisor wired; 8 tests pass.
-- **Next:** Optional Phoenix/LiveView UI; more dialogue topics and item types; proximity / area-based NPC lists.
+- **UI:** Phoenix LiveView dashboard at http://localhost:4000 — areas, NPCs, live chat feed.
+- **Next:** More dialogue topics and item types; proximity / area-based NPC lists.
 
 ## Requirements
 

@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-- Proximity / area→NPC list; more dialogue topics and item types; optional Phoenix UI.
+- Proximity / area→NPC list; more dialogue topics and item types.
+
+## [0.2.0] - 2026-02-18
+
+### Added
+
+- **Phoenix LiveView UI:** Town Square dashboard at http://localhost:4000.
+- **HumanSim.Events:** PubSub broadcasts for move, chat, hear; LiveView subscribes for real-time updates.
+- **HumanSim.SimRunner:** Auto-tick GenServer; seeds 4 areas (square, shop, park, tavern), items, 8 NPCs; drives moves/chats every 2s.
+- **HumanSimWeb:** Endpoint, Router, TownSquareLive (4-area grid, NPC avatars by mood, live feed).
+- **launch_web.bat:** Web-only launcher; `launch.bat` updated with assets.build and web URL.
 
 ## [0.1.0] - 2025-01-31
 

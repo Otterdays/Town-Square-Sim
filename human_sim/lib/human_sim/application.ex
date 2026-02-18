@@ -9,8 +9,11 @@ defmodule HumanSim.Application do
   def start(_type, _args) do
     children = [
       {Registry, keys: :unique, name: HumanSim.NPCRegistry},
+      {Phoenix.PubSub, name: HumanSim.PubSub},
       HumanSim.World,
-      {DynamicSupervisor, strategy: :one_for_one, name: HumanSim.Crowd.Supervisor}
+      {DynamicSupervisor, strategy: :one_for_one, name: HumanSim.Crowd.Supervisor},
+      HumanSim.SimRunner,
+      HumanSimWeb.Endpoint
     ]
     opts = [strategy: :rest_for_one, name: HumanSim.Supervisor]
     Supervisor.start_link(children, opts)

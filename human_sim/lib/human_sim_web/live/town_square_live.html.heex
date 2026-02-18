@@ -1,0 +1,59 @@
+<div class="max-w-6xl mx-auto">
+  <header class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-slate-100">Town Square Sim</h1>
+    <div class="text-slate-400">
+      <span class="font-mono"><%= @npc_count %> NPCs</span>
+      <span class="mx-2">·</span>
+      <span class="font-mono">tick <%= @tick %></span>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 grid grid-cols-2 gap-4">
+      <%= for area_id <- @areas do %>
+        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+          <h2 class="text-sm font-semibold text-slate-300 mb-3">
+            <%= @area_labels[area_id] %>
+          </h2>
+          <div class="flex flex-wrap gap-2 min-h-[4rem]">
+            <%= for {_npc_id, npc} <- @npcs do %>
+              <%= if npc.area_id == area_id do %>
+                <div
+                  class={"w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-slate-900 #{mood_color(npc.mood)}"}
+                  title={npc.name}
+                >
+                  <%= initials(npc.name) %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="mt-2 flex flex-wrap gap-1">
+            <%= for item <- Map.get(@items_by_area, area_id, []) do %>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-600 text-slate-300">
+                <%= item.type %>:<%= item.state %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+      <h2 class="text-sm font-semibold text-slate-300 mb-3">Live Feed</h2>
+      <div class="space-y-2 max-h-96 overflow-y-auto font-mono text-sm">
+        <%= if Enum.empty?(@feed) do %>
+          <p class="text-slate-500">Waiting for activity...</p>
+        <% else %>
+          <%= for entry <- @feed do %>
+            <div class="text-slate-400">
+              <span class="text-slate-500">
+                <%= Calendar.strftime(entry.at, "%H:%M:%S") %>
+              </span>
+              <span class="text-slate-300 ml-2"><%= entry.text %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

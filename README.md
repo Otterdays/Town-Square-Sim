@@ -23,10 +23,13 @@ cd Town-Square-Sim/human_sim
 mix deps.get
 mix compile
 mix test
+mix assets.build
 iex -S mix
 ```
 
-**Windows:** From repo root, run `launch.bat` to open an IEx session.
+**Web UI:** Open http://localhost:4000 for the live Town Square dashboard (NPCs, areas, chat feed).
+
+**Windows:** From repo root, run `launch.bat` (IEx + web) or `launch_web.bat` (web only).
 
 ## Try it in IEx
 

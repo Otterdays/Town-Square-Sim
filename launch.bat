@@ -1,7 +1,9 @@
 @echo off
-echo Starting Human Simulator...
 cd /d "%~dp0human_sim"
-call mix deps.get
-call mix compile
+echo Town Square Sim — setup...
+call mix setup
+echo.
+echo Web UI: http://localhost:4000
+echo.
 call iex -S mix
 pause

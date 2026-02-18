@@ -81,3 +81,14 @@ graph TB
 - **New dialogue topics:** Add `responses_for(topic, ...)` clause and optionally extend `NPC.infer_topic/1`.
 - **Proximity / “who’s here”:** World could maintain area→[npc_id] and NPC could register/unregister on move.
 - **NPC–NPC chat:** After one NPC says something, resolve NPCs in same area (from World or a separate registry) and call `NPC.hear/3` on each.
+
+## UI (Phoenix LiveView)
+
+| Module | Role |
+|--------|------|
+| **HumanSim.Events** | PubSub broadcasts for move, chat, hear. LiveView subscribes. |
+| **HumanSim.SimRunner** | Auto-tick GenServer: seeds areas/items/NPCs, drives activity every 2s. |
+| **HumanSimWeb.Endpoint** | Phoenix endpoint; serves assets, LiveView socket. |
+| **HumanSimWeb.TownSquareLive** | LiveView: 4-area grid, NPC avatars, live feed. |
+
+Run `mix assets.build` then `iex -S mix` or `launch.bat`; open http://localhost:4000.
