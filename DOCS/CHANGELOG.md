@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Proximity / area→NPC list; more dialogue topics and item types.
 
+### Added
+
+- **3D town view:** `HumanSimWeb.SceneSnapshot`, LiveView `push_event` scene_init/scene_patch, JS hook `TownSquare3D` (Three.js) with zones, NPC meshes, items, move tweens, interact cues.
+- **Events:** `item_interact` PubSub broadcast after successful NPC `use_item`; LiveView feed + scene patch for item state.
+- **World seed:** Item `metadata.anchor` for bench/counter/fountain/chair placement in 3D.
+
+### Changed
+
+- **README:** Rewritten for clarity; highlights 3D LiveView UI, `npm install` in `human_sim/assets`, PubSub/event surface, and doc map.
+- **Repo URL:** Clone instructions and Mix `package/0` link point to [github.com/Otterdays/Game-Town-Square-Sim](https://github.com/Otterdays/Game-Town-Square-Sim).
+
 ## [0.2.0] - 2026-02-18
 
 ### Added

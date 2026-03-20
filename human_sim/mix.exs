@@ -25,7 +25,7 @@ defmodule HumanSim.MixProject do
   defp package do
     [
       licenses: ["MIT"],
-      links: %{}
+      links: %{"GitHub" => "https://github.com/Otterdays/Game-Town-Square-Sim"}
     ]
   end
 

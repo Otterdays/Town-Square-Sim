@@ -1,43 +1,68 @@
-# Human Simulator (Town-Square)
+# Town Square Sim
 
-Rule-based simulation of chatting NPCs, crowds, environment items, and personalities—built in **Elixir/OTP**, no ML.
+**A live, rule-driven crowd simulator in Elixir** — dozens of NPC processes chat, roam between areas, and poke at the world around them. No ML, no external APIs: just OTP, personalities, and code you can read.
 
-Use it for: game-like NPCs, agent-based crowds, interactive environments, or as a base for a small social sim.
+Open the browser and you get a **real-time 3D town** (Three.js + Phoenix LiveView): four districts on one plane, capsule crowds, benches and props that change state when someone sits or grabs something, plus a scrolling event feed so you can see the drama unfold.
 
-## Features
+---
 
-- **Chatting NPCs** — Each NPC is a process with personality, mood, and short-term memory. Say things and get rule-based replies; chat by topic (greeting, weather, goodbye, etc.).
-- **Personalities** — Traits (friendly, grumpy, curious, shy, bold) drive dialogue and are easy to extend for reactions.
-- **Crowds** — Spawn many NPCs under a supervisor; scale to hundreds or more.
-- **Environment & items** — World holds areas and items; NPCs (or your code) can use, pick up, or inspect items. Bench, door, and generic object behaviors included; add more in one place.
+## Why this exists
+
+Use it as a **playground** for concurrent agents, a **prototype** for game or social sims, or a **teaching** example of GenServers, supervision, ETS-backed worlds, and PubSub-driven UIs.
+
+---
+
+## What you get
+
+| | |
+| --- | --- |
+| **NPCs** | One process per character: personality traits, mood, short-term memory, `say` / `hear` / `chat` / `move` / `use_item`. |
+| **Dialogue** | Template-style responses by topic (greeting, weather, goodbye, …) weighted by personality — extend in one module. |
+| **World** | Areas and items in ETS; `interact_item` with effects (bench occupancy, doors, pick-up, inspect). |
+| **Crowd** | Dynamic supervisor; spawn one NPC or hundreds. |
+| **Web UI** | LiveView dashboard at **http://localhost:4000** — 3D scene synced over the socket (`scene_init` / `scene_patch`), 2D area grid, live feed. |
+| **Events** | PubSub: moves, chat, overheard lines, and **`item_interact`** when the sim actually changes an item. |
+
+---
 
 ## Requirements
 
-- [Elixir](https://elixir-lang.org/install.html) 1.19+ (and Erlang/OTP from the same install)
+- [Elixir](https://elixir-lang.org/install.html) **1.19+** (Erlang/OTP from the same install)
+- [Node.js](https://nodejs.org/) (for `npm` — pulls **Three.js** into `human_sim/assets`)
+
+---
 
 ## Quick start
 
 ```bash
-git clone https://github.com/Otterdays/Town-Square-Sim.git
-cd Town-Square-Sim/human_sim
-mix deps.get
-mix compile
+git clone https://github.com/Otterdays/Game-Town-Square-Sim.git
+cd Game-Town-Square-Sim/human_sim/assets
+npm install
+cd ..
+mix setup    # deps.get, compile, assets.build
 mix test
-mix assets.build
 iex -S mix
 ```
 
-**Web UI:** Open http://localhost:4000 for the live Town Square dashboard (NPCs, areas, chat feed).
+Then visit **http://localhost:4000** and watch the town tick (auto-driven sim + 3D view).
 
-**Windows:** From repo root, run `launch.bat` (IEx + web) or `launch_web.bat` (web only).
+**Windows:** from the repo root, `launch.bat` runs `mix setup` and opens **IEx + web**; `launch_web.bat` is web-only if you prefer.
+
+---
 
 ## Try it in IEx
 
-Once in `iex -S mix`, the app and World are already running:
+With `iex -S mix`, the application (World, optional sim runner, endpoint) is already up:
 
 ```elixir
 HumanSim.World.register_area(:square)
-HumanSim.World.put_item(%HumanSim.Item{id: :bench1, type: :bench, area_id: :square, state: :available, metadata: %{}})
+HumanSim.World.put_item(%HumanSim.Item{
+  id: :bench1,
+  type: :bench,
+  area_id: :square,
+  state: :available,
+  metadata: %{}
+})
 
 HumanSim.Crowd.spawn_npc(id: "alice", name: "Alice", area_id: :square)
 HumanSim.Crowd.spawn_npc(id: "bob", name: "Bob", area_id: :square)
@@ -50,21 +75,30 @@ HumanSim.Crowd.spawn_npc_list(20, area_id: :square)
 HumanSim.Crowd.count()
 ```
 
+---
+
 ## Project layout
 
 | Path | Description |
-|------|-------------|
-| `human_sim/` | Elixir Mix application (all runtime code and tests). |
-| `DOCS/` | Project docs: architecture, summary, style guide, changelog, etc. |
-| `CONTRIBUTING.md` | How to contribute. |
+| --- | --- |
+| `human_sim/` | Mix app: sim core, Phoenix endpoint, LiveView, assets (JS/CSS), tests. |
+| `human_sim/assets/` | Front-end bundle; `npm install` here before first `mix assets.build` (or `mix setup`). |
+| `DOCS/` | Architecture, summary, SBOM, style guide, changelog, scratchpad. |
+| `CONTRIBUTING.md` | Contribution guidelines. |
 | `LICENSE` | MIT. |
+
+---
 
 ## Documentation
 
-- **Overview & run:** This README.
-- **Architecture, API, extension points:** [DOCS/ARCHITECTURE.md](DOCS/ARCHITECTURE.md).
-- **Status and quick links:** [DOCS/SUMMARY.md](DOCS/SUMMARY.md).
-- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md).
+| Doc | What it’s for |
+| --- | --- |
+| [DOCS/ARCHITECTURE.md](DOCS/ARCHITECTURE.md) | Supervision tree, World/NPC API, **Scene / 3D** payloads and hook name. |
+| [DOCS/SUMMARY.md](DOCS/SUMMARY.md) | Short status snapshot and quick links. |
+| [DOCS/SBOM.md](DOCS/SBOM.md) | Hex + npm dependencies. |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute. |
+
+---
 
 ## License
 

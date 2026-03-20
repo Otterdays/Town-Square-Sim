@@ -62,5 +62,37 @@ defmodule HumanSimTest do
       assert is_binary(resp)
       HumanSim.NPC.chat(id, :weather)
     end
+
+    test "broadcasts item_interact on successful use_item" do
+      Phoenix.PubSub.subscribe(HumanSim.PubSub, "sim:events")
+      area = :item_broadcast_area
+      bench_id = "bench_bc_#{System.unique_integer([:positive])}"
+      npc_id = "npc_bc_#{System.unique_integer([:positive])}"
+
+      :ok = HumanSim.World.register_area(area)
+
+      HumanSim.World.put_item(%HumanSim.Item{
+        id: bench_id,
+        type: :bench,
+        area_id: area,
+        state: :available,
+        metadata: %{}
+      })
+
+      assert {:ok, _pid} =
+               HumanSim.Crowd.spawn_npc(id: npc_id, name: "ItemBroadcast", area_id: area)
+
+      assert {:ok, :sat_down, _} = HumanSim.NPC.use_item(npc_id, bench_id, :use)
+
+      assert_receive {:sim_event,
+                      %{
+                        type: :item_interact,
+                        effect: :sat_down,
+                        item_id: ^bench_id,
+                        npc_id: ^npc_id,
+                        item_type: :bench
+                      }},
+                     500
+    end
   end
 end

@@ -4,6 +4,7 @@
 import Config
 
 config :human_sim, HumanSimWeb.Endpoint,
+  adapter: Bandit.PhoenixAdapter,
   url: [host: "localhost"],
   render_errors: [
     formats: [html: HumanSimWeb.ErrorHTML],

@@ -79,28 +79,28 @@ defmodule HumanSim.SimRunner do
       type: :bench,
       area_id: :square,
       state: :available,
-      metadata: %{}
+      metadata: %{anchor: %{x: 2.0, z: -1.5}}
     })
     World.put_item(%Item{
       id: :counter_shop,
       type: :object,
       area_id: :shop,
       state: :available,
-      metadata: %{}
+      metadata: %{anchor: %{x: 1.0, z: 1.5}}
     })
     World.put_item(%Item{
       id: :fountain_park,
       type: :object,
       area_id: :park,
       state: :available,
-      metadata: %{}
+      metadata: %{anchor: %{x: 0.5, z: 0.0}}
     })
     World.put_item(%Item{
       id: :chair_tavern,
       type: :bench,
       area_id: :tavern,
       state: :available,
-      metadata: %{}
+      metadata: %{anchor: %{x: -1.0, z: 2.0}}
     })
 
     npc_opts = [

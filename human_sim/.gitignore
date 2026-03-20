@@ -7,6 +7,9 @@
 # The directory Mix downloads your dependencies sources to.
 /deps/
 
+# npm (Three.js and other asset deps)
+/assets/node_modules/
+
 # Where third-party dependencies like ExDoc output generated docs.
 /doc/
 

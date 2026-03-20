@@ -103,6 +103,24 @@ defmodule HumanSim.NPC do
         {:ok, effect, _item} -> add_memory(state.memory, {:used_item, item_id, effect})
         _ -> state.memory
       end
+
+    case result do
+      {:ok, effect, item} ->
+        HumanSim.Events.broadcast(%{
+          type: :item_interact,
+          npc_id: state.id,
+          npc_name: state.name,
+          area_id: state.area_id,
+          item_id: item.id,
+          item_type: item.type,
+          effect: effect,
+          item_state: item.state
+        })
+
+      _ ->
+        :ok
+    end
+
     {:reply, result, %{state | memory: memory}}
   end
 

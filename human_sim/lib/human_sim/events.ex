@@ -1,6 +1,6 @@
 defmodule HumanSim.Events do
   @moduledoc """
-  PubSub broadcasts for sim events. LiveView subscribes for real-time updates.
+  PubSub broadcasts for sim events (move, chat, hear, item_interact). LiveView subscribes for real-time updates.
   [TRACE: ARCHITECTURE.md]
   """
   @topic "sim:events"

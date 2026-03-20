@@ -86,9 +86,22 @@ graph TB
 
 | Module | Role |
 |--------|------|
-| **HumanSim.Events** | PubSub broadcasts for move, chat, hear. LiveView subscribes. |
+| **HumanSim.Events** | PubSub broadcasts for move, chat, hear, item_interact. LiveView subscribes. |
 | **HumanSim.SimRunner** | Auto-tick GenServer: seeds areas/items/NPCs, drives activity every 2s. |
 | **HumanSimWeb.Endpoint** | Phoenix endpoint; serves assets, LiveView socket. |
 | **HumanSimWeb.TownSquareLive** | LiveView: 4-area grid, NPC avatars, live feed. |
 
 Run `mix assets.build` then `iex -S mix` or `launch.bat`; open http://localhost:4000.
+
+## Scene / 3D (Town Square LiveView)
+
+| Piece | Role |
+|--------|------|
+| **HumanSimWeb.SceneSnapshot** | Builds Jason-safe maps: `zones` (origin, size per area), `npcs` (id, name, area, mood, slot position), `items` (id, type, state, world position from zone + item `metadata.anchor`). |
+| **push_event("scene_init", …)** | Sent on LiveView mount with full snapshot from `SimRunner.get_snapshot/0`. |
+| **push_event("scene_patch", …)** | Partial updates: `npcs` after moves; `items` + optional `interact` (`npcId`, `itemId`, `effect`) after item use. |
+| **JS hook `TownSquare3D`** | `assets/js/town_square_3d.js` (Three.js): ground quadrants, capsule NPCs, bench / crate / fountain props, tweens and simple interact animations. |
+
+PubSub event **`:item_interact`** is broadcast from `NPC` after a successful `World.interact_item/3` so the dashboard and 3D layer stay in sync with item state (e.g. bench `in_use`, object `taken`).
+
+[AMENDED 2026-03-20]: Added Scene / 3D subsection and `item_interact` note.
